@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace DomainDrivenDesign.Controllers
+namespace SmartDomainDrivenDesign.WebApiExample.Controllers
 {
     [ApiController]
     [Route("[controller]")]

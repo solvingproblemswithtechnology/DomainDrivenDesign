@@ -1,6 +1,6 @@
 using System;
 
-namespace DomainDrivenDesign
+namespace SmartDomainDrivenDesign.WebApiExample
 {
     public class WeatherForecast
     {
