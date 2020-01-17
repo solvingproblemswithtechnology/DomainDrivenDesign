@@ -21,7 +21,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.MediatR
         {
             if (request is ICacheableRequest<TResponse> cacheableRequest)
             {
-                var key = cacheableRequest.GetCacheKey();
+                object key = cacheableRequest.GetCacheKey();
 
                 if (cache.TryGetValue(key, out TResponse cached))
                 {
@@ -36,7 +36,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.MediatR
 
             if (request is ICacheInvalidationRequest cacheInvalidationRequest)
             {
-                var key = cacheInvalidationRequest.GetCacheKey();
+                string key = cacheInvalidationRequest.GetCacheKey();
                 cache.Remove(key);
                 logger.LogTrace("Cache invalidated: {Key}", key);
             }

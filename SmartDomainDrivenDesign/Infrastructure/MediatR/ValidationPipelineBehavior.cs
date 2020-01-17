@@ -18,7 +18,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.MediatR
 
         public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            var failures = validators
+            List<FluentValidation.Results.ValidationFailure> failures = validators
                 .Select(validator => validator.Validate(request))
                 .SelectMany(result => result.Errors)
                 .Where(error => error != null)

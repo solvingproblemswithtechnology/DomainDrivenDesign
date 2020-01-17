@@ -18,7 +18,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.MediatR
         {
             logger.LogTrace("Starting command: " + requestName); // Just example
 
-            var response = await next();
+            TResponse response = await next();
 
             logger.LogTrace("Ended command: " + requestName); // Just example
 
