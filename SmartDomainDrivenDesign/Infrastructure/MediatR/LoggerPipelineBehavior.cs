@@ -14,11 +14,12 @@ namespace SmartDomainDrivenDesign.Infrastructure.MediatR
         {
             this.logger = logger;
         }
+
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
             logger.LogTrace("Starting command: " + requestName); // Just example
 
-            TResponse response = await next();
+            TResponse response = await next().ConfigureAwait(false);
 
             logger.LogTrace("Ended command: " + requestName); // Just example
 

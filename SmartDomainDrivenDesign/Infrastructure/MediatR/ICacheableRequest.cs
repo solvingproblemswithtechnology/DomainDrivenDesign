@@ -1,6 +1,6 @@
 ﻿namespace SmartDomainDrivenDesign.Infrastructure.MediatR
 {
-    internal interface ICacheableRequest<TResponse>
+    public interface ICacheableRequest<TResponse>
     {
         object GetExpirationTime();
         object GetCacheKey();

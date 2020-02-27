@@ -1,6 +1,6 @@
 ﻿namespace SmartDomainDrivenDesign.Infrastructure.MediatR
 {
-    internal interface ICacheInvalidationRequest
+    public interface ICacheInvalidationRequest
     {
         string GetCacheKey();
     }
