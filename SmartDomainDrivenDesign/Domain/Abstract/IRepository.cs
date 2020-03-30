@@ -1,4 +1,4 @@
-﻿namespace SmartDomainDrivenDesign.Abstract
+﻿namespace SmartDomainDrivenDesign.Domain.Abstract
 {
     public class IRepository
     {

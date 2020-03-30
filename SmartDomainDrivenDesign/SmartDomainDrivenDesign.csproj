@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Application\" />
+    <Folder Include="Domain\Shared\" />
     <Folder Include="Infrastructure\AspNetCore\" />
     <Folder Include="Infrastructure\EntityFrameworkCore\" />
   </ItemGroup>
