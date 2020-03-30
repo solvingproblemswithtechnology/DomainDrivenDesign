@@ -76,7 +76,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         public static IApplicationBuilder UseSmartLoggingMiddleware(this IApplicationBuilder app) => app.Use(async (ctx, next) =>
         {
             LogContext.PushProperty("Usuario", ctx.GetUsername());
-            await next();
+            await next().ConfigureAwait(false);
         });
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         public static async Task WarmupEntityFrameworkAsync<T>(this IApplicationBuilder app) where T : DbContext
         {
             using var scope = app.ApplicationServices.CreateScope();
-            await scope.ServiceProvider.GetService<T>().Database.OpenConnectionAsync();
+            await scope.ServiceProvider.GetService<T>().Database.OpenConnectionAsync().ConfigureAwait(false);
         }
     }
 }

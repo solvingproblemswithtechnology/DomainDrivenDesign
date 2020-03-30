@@ -4,9 +4,6 @@ using Serilog.Events;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SmartDomainDrivenDesign.Infrastructure.Serilog
 {
@@ -20,7 +17,6 @@ namespace SmartDomainDrivenDesign.Infrastructure.Serilog
         private readonly LogEventLevel fullDumpLevel;
         private readonly LoggingLevelSwitch controlLevelSwitch;
         private readonly ConcurrentDictionary<string, BlockingCollection<LogEvent>> buffers;
-
 
         /// <summary>
         /// Constructor

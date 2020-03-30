@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace SmartDomainDrivenDesign.Infrastructure.MediatR
 {
-    public class RequestCachePipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : ICacheableRequest<TResponse>
+    public class CacheableRequestPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : ICacheableRequest<TResponse>
     {
         private readonly IMemoryCache cache;
-        private readonly ILogger<RequestCachePipelineBehavior<TRequest, TResponse>> logger;
+        private readonly ILogger<CacheableRequestPipelineBehavior<TRequest, TResponse>> logger;
 
-        public RequestCachePipelineBehavior(IMemoryCache cache, ILogger<RequestCachePipelineBehavior<TRequest, TResponse>> logger)
+        public CacheableRequestPipelineBehavior(IMemoryCache cache, ILogger<CacheableRequestPipelineBehavior<TRequest, TResponse>> logger)
         {
             this.cache = cache;
             this.logger = logger;

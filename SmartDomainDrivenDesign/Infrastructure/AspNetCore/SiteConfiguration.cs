@@ -4,22 +4,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
-using NSwag.Generation.AspNetCore;
-using Oracle.ManagedDataAccess.Client;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Formatting.Compact;
+using SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore;
 using System;
 using System.IO.Compression;
 using System.Net.Http;
-using WebApiContrib.Core.Formatter.Csv;
 
 namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
 {
@@ -49,34 +45,34 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         }
 
         /// <summary>
-        /// Añade swagger con la configuración por defect
+        /// Añade swagger con la configuración por defecto
         /// </summary>
         /// <param name="services"></param>
         /// <param name="environment"></param>
         /// <param name="version"></param>
-        public static IServiceCollection AddSmartSwaggerGen(this IServiceCollection services, Action<AspNetCoreOpenApiDocumentGeneratorSettings, IServiceProvider> configure = null)
-        {
-            return services.AddOpenApiDocument((options, services) =>
-            {
-                options.DocumentName = "Web Api";
-                options.Version = "v1";
-                options.Description = "Web Api description";
-                options.PostProcess = document =>
-                {
-                    document.Info.Version = "v1";
-                    document.Info.Title = "Web Api";
-                    document.Info.Description = "Web Api description";
-                    document.Info.Contact = new NSwag.OpenApiContact
-                    {
-                        Name = "",
-                        Email = "",
-                        Url = ""
-                    };
-                };
+        //public static IServiceCollection AddSmartSwaggerGen(this IServiceCollection services, Action<AspNetCoreOpenApiDocumentGeneratorSettings, IServiceProvider> configure = null)
+        //{
+        //    return services.AddOpenApiDocument((options, services) =>
+        //    {
+        //        options.DocumentName = "Web Api";
+        //        options.Version = "v1";
+        //        options.Description = "Web Api description";
+        //        options.PostProcess = document =>
+        //        {
+        //            document.Info.Version = "v1";
+        //            document.Info.Title = "Web Api";
+        //            document.Info.Description = "Web Api description";
+        //            document.Info.Contact = new NSwag.OpenApiContact
+        //            {
+        //                Name = "",
+        //                Email = "",
+        //                Url = ""
+        //            };
+        //        };
 
-                configure?.Invoke(options, services);
-            });
-        }
+        //        configure?.Invoke(options, services);
+        //    });
+        //}
 
         /// <summary>
         /// Añade los controladores, configura newtonsoft y 
@@ -91,12 +87,12 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
                 options.SerializerSettings.NullValueHandling = environment.IsDevelopment() ? NullValueHandling.Include : NullValueHandling.Ignore;
             }).AddMvcOptions(options =>
             {
-                options.FormatterMappings.SetMediaTypeMappingForFormat("csv", MediaTypeHeaderValue.Parse("text/csv"));
-                options.OutputFormatters.Add(new CsvOutputFormatter(new CsvFormatterOptions()
-                {
-                    CsvDelimiter = ";",
-                    UseSingleLineHeaderInCsv = true
-                }));
+                //options.FormatterMappings.SetMediaTypeMappingForFormat("csv", MediaTypeHeaderValue.Parse("text/csv"));
+                //options.OutputFormatters.Add(new CsvOutputFormatter(new CsvFormatterOptions()
+                //{
+                //    CsvDelimiter = ";",
+                //    UseSingleLineHeaderInCsv = true
+                //}));
             });
 
             return services;
@@ -145,7 +141,8 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         {
             return services.AddHealthChecks().AddDbContextCheck<TContext>();
         }
-                
+
+#pragma warning disable EF1001 // Internal EF Core API usage.
         /// <summary>
         /// Añade los ProblemDetails por defecto 
         /// </summary>
@@ -163,6 +160,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
                 return context;
             });
         }
+#pragma warning restore EF1001 // Internal EF Core API usage.
 
         /// <summary>
         /// Añade serilog con Seq y valores por defecto
@@ -178,14 +176,14 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
                 if (!ctx.HostingEnvironment.IsProduction()) logger.AddConsole();
             }).UseSerilog((ctx, options) =>
             {
-                SmartConfiguracion configuracion = ctx.Configuration
-                    .GetSection(nameof(SmartConfiguracion))
-                    .Get< SmartConfiguracion();
+                //SmartConfiguracion configuracion = ctx.Configuration
+                //    .GetSection(nameof(SmartConfiguracion))
+                //    .Get< SmartConfiguracion();
 
-                LogEventLevel logLevel = Enum.Parse<LogEventLevel>(configuracion.Logging.LogLevel);
+                //LogEventLevel logLevel = Enum.Parse<LogEventLevel>(configuracion.Logging.LogLevel);
 
-                LoggingLevelSwitch logSwitch = new LoggingLevelSwitch(logLevel);
-                string logPath = configuracion.Logging.FilePath ?? $@"C:\logs\{configuracion.NombreAplicacion}\logs.json";
+                LoggingLevelSwitch logSwitch = new LoggingLevelSwitch(/*logLevel*/);
+                const string logPath = /*configuracion.Logging.FilePath ?? $@"C:\logs\{configuracion.NombreAplicacion}\logs.json"*/ "log.txt";
                 int retainedFileCountLimit = ctx.HostingEnvironment.IsDevelopment() ? 7 : 365 * 2;
 
                 LoggerConfiguration builder = options
@@ -201,7 +199,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
                     .WriteTo.Async(configure => configure.Debug()
                         .WriteTo.File(new CompactJsonFormatter(), logPath, buffered: true, shared: false, flushToDiskInterval: TimeSpan.FromSeconds(5),
                             retainedFileCountLimit: retainedFileCountLimit, rollingInterval: RollingInterval.Day))
-                    .WriteTo.Seq(configuracion.Logging.SeqUrl, apiKey: configuracion.Logging.SeqApiKey, controlLevelSwitch: logSwitch);
+                    /*.WriteTo.Seq(configuracion.Logging.SeqUrl, apiKey: configuracion.Logging.SeqApiKey, controlLevelSwitch: logSwitch)*/;
 
                 configureLogger?.Invoke(ctx, builder);
             }, writeToProviders: true);
