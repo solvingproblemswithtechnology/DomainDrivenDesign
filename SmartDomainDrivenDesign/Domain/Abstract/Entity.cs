@@ -22,16 +22,16 @@ namespace SmartDomainDrivenDesign.Domain.Abstract
         /// </summary>
         /// <param name="obj">Object to compare</param>
         public override bool Equals(object obj)
-            => Equals(obj as Entity<T>);
+            => this.Equals(obj as Entity<T>);
 
         /// <summary>
         /// Equals using the Id
         /// </summary>
         /// <param name="other">Entity to compare</param>
         public bool Equals(Entity<T> other)
-            => other != null && Id == other.Id;
+            => other != null && this.Id == other.Id;
         public override int GetHashCode()
-            => 2108858624 + Id.GetHashCode();
+            => 2108858624 + this.Id.GetHashCode();
 
         public static bool operator ==(Entity<T> left, Entity<T> right)
             => EqualityComparer<Entity<T>>.Default.Equals(left, right);

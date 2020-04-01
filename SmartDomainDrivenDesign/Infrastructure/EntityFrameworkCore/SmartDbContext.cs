@@ -46,7 +46,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
         /// </param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            ConfigureAllValueObjectAsOwned(modelBuilder);
+            this.ConfigureAllValueObjectAsOwned(modelBuilder);
             base.OnModelCreating(modelBuilder);
         }
 
@@ -77,7 +77,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
         /// </exception>
         public override int SaveChanges()
         {
-            UpdateAuditables();
+            this.UpdateAuditables();
             return base.SaveChanges();
         }
 
@@ -108,7 +108,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
         /// </exception>
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
-            UpdateAuditables();
+            this.UpdateAuditables();
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
 
@@ -145,7 +145,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
         /// </exception>
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
         {
-            UpdateAuditables();
+            this.UpdateAuditables();
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
@@ -178,7 +178,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
         /// </exception>
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            UpdateAuditables();
+            this.UpdateAuditables();
             return base.SaveChangesAsync(cancellationToken);
         }
 
@@ -209,9 +209,9 @@ namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
             //}
 
             // Versión Entity Framework Core 3.x
-            foreach (var e in modelBuilder.Model.GetEntityTypes())
+            foreach (IMutableEntityType e in modelBuilder.Model.GetEntityTypes())
             {
-                var navigationToValueObjects = e.GetNavigations().Where(n => typeof(ValueObject).IsAssignableFrom(n.GetTargetType().ClrType)).ToList();
+                System.Collections.Generic.List<IMutableNavigation> navigationToValueObjects = e.GetNavigations().Where(n => typeof(ValueObject).IsAssignableFrom(n.GetTargetType().ClrType)).ToList();
                 if (navigationToValueObjects.Any())
                 {
                     EntityTypeBuilder builder = new EntityTypeBuilder(e);
@@ -233,15 +233,15 @@ namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
             {
                 e.Property(nameof(IAuditable.CreationDateTime)).CurrentValue = DateTime.Now;
                 e.Property(nameof(IAuditable.UpdateDateTime)).CurrentValue = DateTime.Now;
-                e.Property(nameof(IAuditable.CreationUser)).CurrentValue = CurrentUser;
-                e.Property(nameof(IAuditable.UpdateUser)).CurrentValue = CurrentUser;
+                e.Property(nameof(IAuditable.CreationUser)).CurrentValue = this.CurrentUser;
+                e.Property(nameof(IAuditable.UpdateUser)).CurrentValue = this.CurrentUser;
             }
 
             foreach (EntityEntry e in this.ChangeTracker.Entries().Where(e => e.State == EntityState.Modified
                 && typeof(IAuditable).IsAssignableFrom(e.Entity.GetType())))
             {
                 e.Property(nameof(IAuditable.UpdateDateTime)).CurrentValue = DateTime.Now;
-                e.Property(nameof(IAuditable.UpdateUser)).CurrentValue = CurrentUser;
+                e.Property(nameof(IAuditable.UpdateUser)).CurrentValue = this.CurrentUser;
             }
         }
 

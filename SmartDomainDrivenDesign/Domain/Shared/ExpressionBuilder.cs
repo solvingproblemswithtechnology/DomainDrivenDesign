@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace SmartDomainDrivenDesign.Domain.Shared
 {
@@ -31,7 +32,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
             if (propertyExpression.Body is MemberExpression body)
                 return body.Member.Name;
 
-            var ubody = (UnaryExpression)propertyExpression.Body;
+            UnaryExpression ubody = (UnaryExpression)propertyExpression.Body;
             body = ubody.Operand as MemberExpression;
 
             return body?.Member.Name;
@@ -48,7 +49,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         /// <returns></returns>
         public static MethodCallExpression Contains<T, B>(Expression<Func<T, object>> propertyExpression, string propertyValue, ParameterExpression parameterExp)
         {
-            var propertyName = GetPropertyName<T>(propertyExpression);
+            string propertyName = GetPropertyName<T>(propertyExpression);
             return Contains<B>(propertyName, propertyValue, parameterExp);
         }
 
@@ -62,9 +63,9 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         /// <returns></returns>
         public static MethodCallExpression Contains<B>(string propertyName, string propertyValue, ParameterExpression parameterExp)
         {
-            var propertyExp = Expression.Property(parameterExp, propertyName);
-            var method = typeof(B).GetMethod("Contains", new[] { typeof(B) });
-            var someValue = Expression.Constant(propertyValue, typeof(string));
+            MemberExpression propertyExp = Expression.Property(parameterExp, propertyName);
+            MethodInfo method = typeof(B).GetMethod("Contains", new[] { typeof(B) });
+            ConstantExpression someValue = Expression.Constant(propertyValue, typeof(string));
             return Expression.Call(propertyExp, method, someValue);
         }
 
@@ -76,14 +77,14 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         public static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
         {
             // build parameter map (from parameters of second to parameters of first)
-            var map = first.Parameters.Select((f, i) => new
+            Dictionary<ParameterExpression, ParameterExpression> map = first.Parameters.Select((f, i) => new
             {
                 f,
                 s = second.Parameters[i]
             }).ToDictionary(p => p.s, p => p.f);
 
             // replace parameters in the second lambda expression with parameters from the first
-            var secondBody = ParameterRebinder.ReplaceParameters(map, second.Body);
+            Expression secondBody = ParameterRebinder.ReplaceParameters(map, second.Body);
 
             // apply composition of lambda expression bodies to parameters from the first expression 
             return Expression.Lambda<T>(merge(first.Body, secondBody), first.Parameters);
@@ -130,7 +131,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
 
         protected override Expression VisitParameter(ParameterExpression p)
         {
-            if (map.TryGetValue(p, out ParameterExpression replacement))
+            if (this.map.TryGetValue(p, out ParameterExpression replacement))
             {
                 p = replacement;
             }

@@ -21,13 +21,13 @@ namespace SmartDomainDrivenDesign.Infrastructure.MediatR
         {
             object key = request.GetCacheKey();
 
-            if (cache.TryGetValue(key, out TResponse cached))
+            if (this.cache.TryGetValue(key, out TResponse cached))
             {
-                logger.LogTrace("Cache hitted: {Key}", key);
+                this.logger.LogTrace("Cache hitted: {Key}", key);
                 return cached;
             }
 
-            logger.LogTrace("Cache missed: {Key}", key);
+            this.logger.LogTrace("Cache missed: {Key}", key);
 
             TResponse response = await next().ConfigureAwait(false);
 

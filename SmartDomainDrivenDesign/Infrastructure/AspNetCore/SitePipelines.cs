@@ -37,7 +37,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
             {
                 options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
                 {
-                    var request = httpContext.Request;
+                    HttpRequest request = httpContext.Request;
 
                     diagnosticContext.Set("Host", request.Host);
                     diagnosticContext.Set("Protocol", request.Protocol);
@@ -48,7 +48,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
 
                     diagnosticContext.Set("ContentType", httpContext.Response.ContentType);
 
-                    var endpoint = httpContext.GetEndpoint();
+                    Endpoint endpoint = httpContext.GetEndpoint();
                     if (endpoint is object) // endpoint != null
                     {
                         diagnosticContext.Set("EndpointName", endpoint.DisplayName);
@@ -86,7 +86,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         /// <param name="environment"></param>
         public static async Task WarmupEntityFrameworkAsync<T>(this IApplicationBuilder app) where T : DbContext
         {
-            using var scope = app.ApplicationServices.CreateScope();
+            using IServiceScope scope = app.ApplicationServices.CreateScope();
             await scope.ServiceProvider.GetService<T>().Database.OpenConnectionAsync().ConfigureAwait(false);
         }
     }

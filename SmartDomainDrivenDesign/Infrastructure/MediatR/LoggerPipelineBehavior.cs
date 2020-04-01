@@ -22,11 +22,11 @@ namespace SmartDomainDrivenDesign.Infrastructure.MediatR
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            logger.LogTrace("Starting command: " + requestName);
+            this.logger.LogTrace("Starting command: " + requestName);
 
             TResponse response = await next().ConfigureAwait(false);
 
-            logger.LogTrace("Ended command: " + requestName);
+            this.logger.LogTrace("Ended command: " + requestName);
 
             return response;
         }

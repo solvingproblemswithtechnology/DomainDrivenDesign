@@ -22,8 +22,8 @@ namespace SmartDomainDrivenDesign.Infrastructure.MediatR
             TResponse response = await next().ConfigureAwait(false);
 
             string key = request.GetCacheKey();
-            cache.Remove(key);
-            logger.LogTrace("Cache invalidated: {Key}", key);
+            this.cache.Remove(key);
+            this.logger.LogTrace("Cache invalidated: {Key}", key);
 
             return response;
         }

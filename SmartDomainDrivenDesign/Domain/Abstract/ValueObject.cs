@@ -39,7 +39,7 @@ namespace SmartDomainDrivenDesign.Domain.Abstract
         /// Equals
         /// </summary>
         /// <param name="obj"></param>
-        public override bool Equals(object obj) => obj is ValueObject other && Equals(other);
+        public override bool Equals(object obj) => obj is ValueObject other && this.Equals(other);
 
         /// <summary>
         /// Equals
@@ -47,10 +47,10 @@ namespace SmartDomainDrivenDesign.Domain.Abstract
         /// <param name="other"></param>
         public bool Equals(ValueObject other)
         {
-            if (other == null || other.GetType() != GetType())
+            if (other == null || other.GetType() != this.GetType())
                 return false;
 
-            IEnumerator<object> thisValues = GetAtomicValues().GetEnumerator();
+            IEnumerator<object> thisValues = this.GetAtomicValues().GetEnumerator();
             IEnumerator<object> otherValues = other.GetAtomicValues().GetEnumerator();
 
             while (thisValues.MoveNext() && otherValues.MoveNext())
@@ -69,12 +69,12 @@ namespace SmartDomainDrivenDesign.Domain.Abstract
         /// Serves as the default hash function.
         /// </summary>
         /// <returns>A hash code for the current object.</returns>
-        public override int GetHashCode() => GetAtomicValues().Select(x => x?.GetHashCode() ?? 0).Aggregate((x, y) => x ^ y);
+        public override int GetHashCode() => this.GetAtomicValues().Select(x => x?.GetHashCode() ?? 0).Aggregate((x, y) => x ^ y);
 
         /// <summary>
         /// Default implementation using the significant values.
         /// </summary>
         /// <returns>A string that represents the current object.</returns>
-        public override string ToString() => string.Join(", ", GetAtomicValues());
+        public override string ToString() => string.Join(", ", this.GetAtomicValues());
     }
 }
