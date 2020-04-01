@@ -137,7 +137,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         /// </summary>
         /// <param name="services"></param>
         /// <param name="environment"></param>
-        public static IHealthChecksBuilder AddSmartHealthChecks<TContext>(this IServiceCollection services) where TContext : SmartDbContext 
+        public static IHealthChecksBuilder AddSmartHealthChecks<TContext>(this IServiceCollection services) where TContext : SmartDbContext
             => services.AddHealthChecks().AddDbContextCheck<TContext>();
 
 #pragma warning disable EF1001 // Internal EF Core API usage.

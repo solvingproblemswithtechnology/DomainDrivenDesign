@@ -17,7 +17,7 @@ namespace SmartDomainDrivenDesign.WebApiExample
             this.environment = environment;
         }
 
-        public void ConfigureServices(IServiceCollection services) 
+        public void ConfigureServices(IServiceCollection services)
             => services.AddControllers();
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

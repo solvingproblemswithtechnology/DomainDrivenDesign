@@ -39,7 +39,6 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="B"></typeparam>
@@ -54,7 +53,6 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <typeparam name="B"></typeparam>
         /// <param name="propertyName"></param>
