@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <CodeAnalysisRuleSet>..\SmartDomainDrivenDesign.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
