@@ -8,7 +8,7 @@
     <Folder Include="Controllers\" />
     <Folder Include="Domain\Model\" />
     <Folder Include="Domain\Services\" />
-    <Folder Include="Infraestructure\" />
+    <Folder Include="Infraestructure\Data\" />
   </ItemGroup>
 
   <ItemGroup>
