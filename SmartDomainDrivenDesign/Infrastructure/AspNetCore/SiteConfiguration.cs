@@ -75,7 +75,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         //}
 
         /// <summary>
-        /// Añade los controladores, configura newtonsoft y 
+        /// Añade los controladores, configura newtonsoft y
         /// </summary>
         /// <param name="services"></param>
         /// <param name="environment"></param>
@@ -99,7 +99,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         }
 
         /// <summary>
-        /// Añade los ProblemDetails por defecto 
+        /// Añade los ProblemDetails por defecto
         /// </summary>
         /// <param name="services"></param>
         /// <param name="environment"></param>
@@ -133,7 +133,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         }
 
         /// <summary>
-        /// Añade los ProblemDetails por defecto 
+        /// Añade los ProblemDetails por defecto
         /// </summary>
         /// <param name="services"></param>
         /// <param name="environment"></param>
@@ -142,7 +142,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
 
 #pragma warning disable EF1001 // Internal EF Core API usage.
         /// <summary>
-        /// Añade los ProblemDetails por defecto 
+        /// Añade los ProblemDetails por defecto
         /// </summary>
         /// <param name="services"></param>
         /// <param name="environment"></param>

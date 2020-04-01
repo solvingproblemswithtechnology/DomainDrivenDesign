@@ -16,7 +16,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
     public static class SitePipelines
     {
         /// <summary>
-        /// Añade los ProblemDetails por defecto 
+        /// Añade los ProblemDetails por defecto
         /// </summary>
         /// <param name="services"></param>
         /// <param name="environment"></param>
@@ -27,7 +27,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         });
 
         /// <summary>
-        /// Añade los ProblemDetails por defecto 
+        /// Añade los ProblemDetails por defecto
         /// </summary>
         /// <param name="services"></param>
         /// <param name="environment"></param>
@@ -69,7 +69,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         }
 
         /// <summary>
-        /// Añade los ProblemDetails por defecto 
+        /// Añade los ProblemDetails por defecto
         /// </summary>
         /// <param name="services"></param>
         /// <param name="environment"></param>

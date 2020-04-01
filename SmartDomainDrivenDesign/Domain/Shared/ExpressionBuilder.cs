@@ -15,10 +15,10 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TResult"></typeparam>
-        /// <param name="fake"></param>
+        /// <param name="_">Fake parameter to the workaround</param>
         /// <param name="expr"></param>
         /// <returns></returns>
-        public static Expression<Func<T, TResult>> CreateExpression<T, TResult>(this T fake, Expression<Func<T, TResult>> expr) => expr;
+        public static Expression<Func<T, TResult>> CreateExpression<T, TResult>(this T _, Expression<Func<T, TResult>> expr) => expr;
 #pragma warning restore RCS1175 // Unused this parameter.
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         }
 
         /// <summary>
-        /// A general utility method to compose lambda expressions without using invoke 
+        /// A general utility method to compose lambda expressions without using invoke
         /// (I’ll call it Compose), and leverage it to implement EF-friendly <c>And</c> and <c>Or</c> builder method.
         /// </summary>
         /// <see cref="http://blogs.msdn.com/b/meek/archive/2008/05/02/linq-to-entities-combining-predicates.aspx"/>
@@ -89,7 +89,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="first"></param>
@@ -98,7 +98,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second) => first.Compose(second, Expression.And);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="first"></param>
@@ -107,7 +107,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second) => first.Compose(second, Expression.Or);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="first"></param>
