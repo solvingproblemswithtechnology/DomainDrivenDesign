@@ -4,9 +4,6 @@ using Serilog.Events;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SmartDomainDrivenDesign.Infrastructure.Serilog
 {
@@ -20,7 +17,6 @@ namespace SmartDomainDrivenDesign.Infrastructure.Serilog
         private readonly LogEventLevel fullDumpLevel;
         private readonly LoggingLevelSwitch controlLevelSwitch;
         private readonly ConcurrentDictionary<string, BlockingCollection<LogEvent>> buffers;
-
 
         /// <summary>
         /// Constructor
@@ -48,16 +44,16 @@ namespace SmartDomainDrivenDesign.Infrastructure.Serilog
             /* If there's no RequestId, don't buffer the logs. Maybe I can buffer on different/many properties */
             if (!logEvent.Properties.TryGetValue("RequestId", out LogEventPropertyValue requestIdProperty))
             {
-                wrappedSink.Emit(logEvent);
+                this.wrappedSink.Emit(logEvent);
                 return;
             }
 
             string requestId = requestIdProperty.ToString();
 
             /* If there's no buffer already, create it. GetOrAdd for concurrent logging and avoid race conditions. */
-            if (!buffers.TryGetValue(requestId, out BlockingCollection<LogEvent> requestLogBuffer))
+            if (!this.buffers.TryGetValue(requestId, out BlockingCollection<LogEvent> requestLogBuffer))
             {
-                requestLogBuffer = buffers.GetOrAdd(requestId, (key) => new BlockingCollection<LogEvent>());
+                requestLogBuffer = this.buffers.GetOrAdd(requestId, (key) => new BlockingCollection<LogEvent>());
             }
 
             try
@@ -77,16 +73,16 @@ namespace SmartDomainDrivenDesign.Infrastructure.Serilog
             if (logEvent.Properties.TryGetValue("SourceContext", out LogEventPropertyValue sourceContext)
                 && "Serilog.AspNetCore.RequestLoggingMiddleware".Equals((sourceContext as ScalarValue)?.Value))
             {
-                FinishBuffer(requestLogBuffer);
-                buffers.Remove(requestId, out _);
+                this.FinishBuffer(requestLogBuffer);
+                this.buffers.Remove(requestId, out _);
             }
-            else if (logEvent.Level >= fullDumpLevel)
+            else if (logEvent.Level >= this.fullDumpLevel)
             {
                 /* Remove until we find the event that triggered the Full Dump. 
                  * This way we ignore new logs added after logEvent was emitted. */
                 while (requestLogBuffer.TryTake(out LogEvent log))
                 {
-                    wrappedSink.Emit(log);
+                    this.wrappedSink.Emit(log);
 
                     if (object.ReferenceEquals(log, logEvent)) break;
                 }
@@ -98,13 +94,13 @@ namespace SmartDomainDrivenDesign.Infrastructure.Serilog
         /// </summary>
         public void Dispose()
         {
-            foreach (var requestLogBuffer in buffers.Values)
+            foreach (BlockingCollection<LogEvent> requestLogBuffer in this.buffers.Values)
             {
-                FinishBuffer(requestLogBuffer);
+                this.FinishBuffer(requestLogBuffer);
             }
 
-            buffers.Clear();
-            (wrappedSink as IDisposable)?.Dispose();
+            this.buffers.Clear();
+            (this.wrappedSink as IDisposable)?.Dispose();
         }
 
         /// <summary>
@@ -117,8 +113,8 @@ namespace SmartDomainDrivenDesign.Infrastructure.Serilog
 
             foreach (LogEvent log in requestLogs)
             {
-                if (IsEnabled(log.Level))
-                    wrappedSink.Emit(log);
+                if (this.IsEnabled(log.Level))
+                    this.wrappedSink.Emit(log);
             }
 
             requestLogs.Dispose();
@@ -130,6 +126,6 @@ namespace SmartDomainDrivenDesign.Infrastructure.Serilog
         /// </summary>
         /// <param name="level">Level to check.</param>
         /// <returns>True if the level is enabled; otherwise, false.</returns>
-        public bool IsEnabled(LogEventLevel level) => level >= (controlLevelSwitch?.MinimumLevel ?? minimumLevel);
+        public bool IsEnabled(LogEventLevel level) => level >= (this.controlLevelSwitch?.MinimumLevel ?? this.minimumLevel);
     }
 }

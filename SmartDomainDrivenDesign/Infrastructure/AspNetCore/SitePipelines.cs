@@ -16,7 +16,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
     public static class SitePipelines
     {
         /// <summary>
-        /// Añade los ProblemDetails por defecto 
+        /// Añade los ProblemDetails por defecto
         /// </summary>
         /// <param name="services"></param>
         /// <param name="environment"></param>
@@ -27,7 +27,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         });
 
         /// <summary>
-        /// Añade los ProblemDetails por defecto 
+        /// Añade los ProblemDetails por defecto
         /// </summary>
         /// <param name="services"></param>
         /// <param name="environment"></param>
@@ -37,7 +37,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
             {
                 options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
                 {
-                    var request = httpContext.Request;
+                    HttpRequest request = httpContext.Request;
 
                     diagnosticContext.Set("Host", request.Host);
                     diagnosticContext.Set("Protocol", request.Protocol);
@@ -48,7 +48,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
 
                     diagnosticContext.Set("ContentType", httpContext.Response.ContentType);
 
-                    var endpoint = httpContext.GetEndpoint();
+                    Endpoint endpoint = httpContext.GetEndpoint();
                     if (endpoint is object) // endpoint != null
                     {
                         diagnosticContext.Set("EndpointName", endpoint.DisplayName);
@@ -69,14 +69,14 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         }
 
         /// <summary>
-        /// Añade los ProblemDetails por defecto 
+        /// Añade los ProblemDetails por defecto
         /// </summary>
         /// <param name="services"></param>
         /// <param name="environment"></param>
         public static IApplicationBuilder UseSmartLoggingMiddleware(this IApplicationBuilder app) => app.Use(async (ctx, next) =>
         {
             LogContext.PushProperty("Usuario", ctx.GetUsername());
-            await next();
+            await next().ConfigureAwait(false);
         });
 
         /// <summary>
@@ -86,8 +86,8 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         /// <param name="environment"></param>
         public static async Task WarmupEntityFrameworkAsync<T>(this IApplicationBuilder app) where T : DbContext
         {
-            using var scope = app.ApplicationServices.CreateScope();
-            await scope.ServiceProvider.GetService<T>().Database.OpenConnectionAsync();
+            using IServiceScope scope = app.ApplicationServices.CreateScope();
+            await scope.ServiceProvider.GetService<T>().Database.OpenConnectionAsync().ConfigureAwait(false);
         }
     }
 }

@@ -1,9 +1,6 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,8 +22,8 @@ namespace SmartDomainDrivenDesign.Infrastructure.MediatR
             TResponse response = await next().ConfigureAwait(false);
 
             string key = request.GetCacheKey();
-            cache.Remove(key);
-            logger.LogTrace("Cache invalidated: {Key}", key);
+            this.cache.Remove(key);
+            this.logger.LogTrace("Cache invalidated: {Key}", key);
 
             return response;
         }

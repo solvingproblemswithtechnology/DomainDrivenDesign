@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
 {
@@ -19,14 +17,14 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
         {
             if (key is null) throw new ArgumentNullException(nameof(key));
 
-            return cache.Get<T>(key);
+            return this.cache.Get<T>(key);
         }
 
         public void Set<T>(T value, [CallerMemberName]string key = null)
         {
             if (key is null) throw new ArgumentNullException(nameof(key));
 
-            cache.Set(key, value);
+            this.cache.Set(key, value);
         }
     }
 }

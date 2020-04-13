@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,22 +21,19 @@ namespace SmartDomainDrivenDesign.Domain.Abstract
         /// Equals using the Id if it's an entity
         /// </summary>
         /// <param name="obj">Object to compare</param>
-        public override bool Equals(object obj) 
-            => Equals(obj as Entity<T>);
+        public override bool Equals(object obj) => this.Equals(obj as Entity<T>);
 
         /// <summary>
         /// Equals using the Id
         /// </summary>
         /// <param name="other">Entity to compare</param>
-        public bool Equals(Entity<T> other) 
-            => other != null && Id == other.Id;
-        public override int GetHashCode() 
-            => 2108858624 + Id.GetHashCode();
+        public bool Equals(Entity<T> other) => other != null && this.Id == other.Id;
 
-        public static bool operator ==(Entity<T> left, Entity<T> right) 
+        public override int GetHashCode() => 2108858624 + this.Id.GetHashCode();
+
+        public static bool operator ==(Entity<T> left, Entity<T> right)
             => EqualityComparer<Entity<T>>.Default.Equals(left, right);
 
-        public static bool operator !=(Entity<T> left, Entity<T> right) 
-            => !(left == right);
+        public static bool operator !=(Entity<T> left, Entity<T> right) => !(left == right);
     }
 }

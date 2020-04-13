@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 
 namespace SmartDomainDrivenDesign.Domain.Shared
 {
@@ -14,10 +15,10 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TResult"></typeparam>
-        /// <param name="fake"></param>
+        /// <param name="_">Fake parameter to the workaround</param>
         /// <param name="expr"></param>
         /// <returns></returns>
-        public static Expression<Func<T, TResult>> CreateExpression<T, TResult>(this T fake, Expression<Func<T, TResult>> expr) => expr;
+        public static Expression<Func<T, TResult>> CreateExpression<T, TResult>(this T _, Expression<Func<T, TResult>> expr) => expr;
 #pragma warning restore RCS1175 // Unused this parameter.
 
         /// <summary>
@@ -31,14 +32,13 @@ namespace SmartDomainDrivenDesign.Domain.Shared
             if (propertyExpression.Body is MemberExpression body)
                 return body.Member.Name;
 
-            var ubody = (UnaryExpression)propertyExpression.Body;
+            UnaryExpression ubody = (UnaryExpression)propertyExpression.Body;
             body = ubody.Operand as MemberExpression;
 
             return body?.Member.Name;
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="B"></typeparam>
@@ -48,12 +48,11 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         /// <returns></returns>
         public static MethodCallExpression Contains<T, B>(Expression<Func<T, object>> propertyExpression, string propertyValue, ParameterExpression parameterExp)
         {
-            var propertyName = GetPropertyName<T>(propertyExpression);
+            string propertyName = GetPropertyName<T>(propertyExpression);
             return Contains<B>(propertyName, propertyValue, parameterExp);
         }
 
         /// <summary>
-        /// 
         /// </summary>
         /// <typeparam name="B"></typeparam>
         /// <param name="propertyName"></param>
@@ -62,35 +61,35 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         /// <returns></returns>
         public static MethodCallExpression Contains<B>(string propertyName, string propertyValue, ParameterExpression parameterExp)
         {
-            var propertyExp = Expression.Property(parameterExp, propertyName);
-            var method = typeof(B).GetMethod("Contains", new[] { typeof(B) });
-            var someValue = Expression.Constant(propertyValue, typeof(string));
+            MemberExpression propertyExp = Expression.Property(parameterExp, propertyName);
+            MethodInfo method = typeof(B).GetMethod("Contains", new[] { typeof(B) });
+            ConstantExpression someValue = Expression.Constant(propertyValue, typeof(string));
             return Expression.Call(propertyExp, method, someValue);
         }
 
         /// <summary>
-        /// A general utility method to compose lambda expressions without using invoke 
+        /// A general utility method to compose lambda expressions without using invoke
         /// (I’ll call it Compose), and leverage it to implement EF-friendly <c>And</c> and <c>Or</c> builder method.
         /// </summary>
         /// <see cref="http://blogs.msdn.com/b/meek/archive/2008/05/02/linq-to-entities-combining-predicates.aspx"/>
         public static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
         {
             // build parameter map (from parameters of second to parameters of first)
-            var map = first.Parameters.Select((f, i) => new
+            Dictionary<ParameterExpression, ParameterExpression> map = first.Parameters.Select((f, i) => new
             {
                 f,
                 s = second.Parameters[i]
             }).ToDictionary(p => p.s, p => p.f);
 
             // replace parameters in the second lambda expression with parameters from the first
-            var secondBody = ParameterRebinder.ReplaceParameters(map, second.Body);
+            Expression secondBody = ParameterRebinder.ReplaceParameters(map, second.Body);
 
             // apply composition of lambda expression bodies to parameters from the first expression 
             return Expression.Lambda<T>(merge(first.Body, secondBody), first.Parameters);
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="first"></param>
@@ -99,7 +98,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second) => first.Compose(second, Expression.And);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="first"></param>
@@ -108,7 +107,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second) => first.Compose(second, Expression.Or);
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="first"></param>
@@ -130,7 +129,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
 
         protected override Expression VisitParameter(ParameterExpression p)
         {
-            if (map.TryGetValue(p, out ParameterExpression replacement))
+            if (this.map.TryGetValue(p, out ParameterExpression replacement))
             {
                 p = replacement;
             }

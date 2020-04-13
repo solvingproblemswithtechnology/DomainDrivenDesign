@@ -5,6 +5,11 @@ using System.Threading.Tasks;
 
 namespace SmartDomainDrivenDesign.Infrastructure.MediatR
 {
+    /// <summary>
+    /// Adds logging at the start and the end of a request with Tracing info
+    /// </summary>
+    /// <typeparam name="TRequest"></typeparam>
+    /// <typeparam name="TResponse"></typeparam>
     public class LoggerPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private static readonly string requestName = typeof(TRequest).Name;
@@ -17,11 +22,11 @@ namespace SmartDomainDrivenDesign.Infrastructure.MediatR
 
         public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            logger.LogTrace("Starting command: " + requestName); // Just example
+            this.logger.LogTrace("Starting command: " + requestName);
 
             TResponse response = await next().ConfigureAwait(false);
 
-            logger.LogTrace("Ended command: " + requestName); // Just example
+            this.logger.LogTrace("Ended command: " + requestName);
 
             return response;
         }
