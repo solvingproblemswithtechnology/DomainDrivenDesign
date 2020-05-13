@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <Folder Include="Application\Orders\Commands\" />
-    <Folder Include="Application\Orders\Handlers\" />
+    <Folder Include="Application\Orders\Queries\" />
     <Folder Include="Controllers\" />
     <Folder Include="Infraestructure\Data\" />
   </ItemGroup>

@@ -1,8 +1,5 @@
 ﻿using SmartDomainDrivenDesign.Domain.Abstract;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SmartDomainDrivenDesign.OrderSample.Domain.Shared
 {
@@ -13,8 +10,6 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Shared
     {
         public decimal Units { get; }
         public string MeasureUnits { get; set; }
-
-        protected Quantity() { }
 
         public Quantity(decimal units, string measureUnits)
         {
