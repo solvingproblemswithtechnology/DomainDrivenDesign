@@ -14,8 +14,6 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Shared
         public decimal Amount { get; }
         public string Currency { get; }
 
-        protected Price() { }
-
         public Price(decimal amount, string currency)
         {
             this.Amount = amount;
@@ -36,5 +34,12 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Shared
 
             return new Price(left.Amount + right.Amount, left.Currency);
         }
+    }
+
+    public static class PriceExtensions
+    {
+        public static Price Sum(this IEnumerable<Price> prices) => prices.Aggregate((accumulator, next) => accumulator + next);
+
+        public static Price Sum<T>(this IEnumerable<T> source, Func<T, Price> selector) => source.Select(selector).Aggregate((accumulator, next) => accumulator + next);
     }
 }
