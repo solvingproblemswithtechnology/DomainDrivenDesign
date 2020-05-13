@@ -29,9 +29,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.MediatR
 
             this.logger.LogTrace("Cache missed: {Key}", key);
 
-            TResponse response = await next().ConfigureAwait(false);
-
-            return response;
+            return await next().ConfigureAwait(false);
         }
     }
 }
