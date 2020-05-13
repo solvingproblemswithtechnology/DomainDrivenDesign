@@ -4,11 +4,11 @@ using SmartDomainDrivenDesign.OrderSample.Domain.Shared;
 
 namespace SmartDomainDrivenDesign.OrderSample.Domain.Orders
 {
-    public class OrderLine : Entity<OrderLine>
+    public class OrderLine : Entity<OrderLine, AutoincrementalEntityId>
     {
-        public string Item { get; set; }
-        public Quantity Quantity { get; set; }
-        public Price UnitPrice { get; set; }
+        public string Item { get; private set; }
+        public Quantity Quantity { get; private set; }
+        public Price UnitPrice { get; private set; }
 
         public Price Total => this.UnitPrice * this.Quantity.Units;
 

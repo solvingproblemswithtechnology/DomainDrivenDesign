@@ -9,9 +9,9 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Orders
 {
     public class Order : Entity<Order>
     {
-        private readonly List<OrderLine> lines;
+        private ICollection<OrderLine> lines;
 
-        public string User { get; }
+        public string User { get; private set; }
 
         public IEnumerable<OrderLine> Lines => lines;
         public Price Total => this.lines.Sum(i => i.UnitPrice);
