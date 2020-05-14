@@ -9,17 +9,27 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Orders
 {
     public class Order : Entity<Order>
     {
-        private ICollection<OrderLine> lines;
-
         public string User { get; private set; }
 
+        #region Navigation Properties
+
+        private ICollection<OrderLine> lines;
         public IEnumerable<OrderLine> Lines => lines;
+
+        #endregion
+
+        #region Readonly Properties
+
         public Price Total => this.lines.Sum(i => i.UnitPrice);
 
-        public Order(string user, IEnumerable<OrderLine> orderItems)
+        #endregion
+
+        private Order(string user) { }
+
+        public Order(string user, IEnumerable<OrderLine> lines)
         {
             this.User = user;
-            this.lines = orderItems.ToList();
+            this.lines = lines.ToList();
         }
 
         public static Order PlaceOrder(User user, IEnumerable<(decimal quantity, Item item)> quantities)

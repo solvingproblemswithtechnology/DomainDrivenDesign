@@ -13,6 +13,8 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Shared
         public decimal Amount { get; }
         public string Currency { get; }
 
+        private Price() { }
+
         public Price(decimal amount, string currency)
         {
             this.Amount = amount;

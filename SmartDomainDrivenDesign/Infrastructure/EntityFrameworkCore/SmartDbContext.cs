@@ -218,6 +218,7 @@ namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
                     foreach (IMutableNavigation ownedNavigation in navigationToValueObjects)
                     {
                         builder.OwnsOne(ownedNavigation.GetTargetType().ClrType, ownedNavigation.Name);
+                        Console.WriteLine();
                     }
                 }
             }

@@ -6,15 +6,14 @@ using System.Text;
 
 namespace SmartDomainDrivenDesign.Domain.Abstract
 {
-    public class AutoincrementalEntityId : EntityId
+    public class AutoIncrementalEntityId : EntityId
     {
-        [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; protected set; }
 
-        private AutoincrementalEntityId() { }
+        private AutoIncrementalEntityId() { }
 
-        public AutoincrementalEntityId(long id)
+        public AutoIncrementalEntityId(long id)
         {
             this.Id = id;
         }

@@ -22,7 +22,6 @@ namespace SmartDomainDrivenDesign.Domain.Abstract
         /// Unique identifier
         /// </summary>
         [Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public virtual TIdentifier Id { get; protected set; }
 
         /// <summary>

@@ -11,6 +11,8 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Shared
         public decimal Units { get; }
         public string MeasureUnits { get; set; }
 
+        private Quantity() { }
+
         public Quantity(decimal units, string measureUnits)
         {
             this.Units = units;

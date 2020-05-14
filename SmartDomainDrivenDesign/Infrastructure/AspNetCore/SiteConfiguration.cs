@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -142,18 +143,46 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
 
 #pragma warning disable EF1001 // Internal EF Core API usage.
         /// <summary>
-        /// Añade los ProblemDetails por defecto
+        /// Adds a SmartDbContext pool.
         /// </summary>
         /// <param name="services"></param>
         /// <param name="environment"></param>
         public static IServiceCollection AddSmartDbContextPool<TContext>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction) where TContext : SmartDbContext
         {
-            services.AddDbContextPool<TContext>(optionsAction);
-            services.AddHttpContextAccessor();
+            services.AddHttpContextAccessor()
+                .AddDbContextPool<TContext>(opt =>
+                {
+                    optionsAction(opt);
+                    opt.ReplaceService<IValueConverterSelector, SmartValueConverter>();
+                });
+
             return services.AddScoped(sp =>
             {
                 IHttpContextAccessor accessor = sp.GetService<IHttpContextAccessor>();
                 TContext context = sp.GetService<DbContextPool<TContext>.Lease>().Context;
+                context.CurrentUser = accessor.HttpContext.GetUsername();
+                return context;
+            });
+        }
+
+        /// <summary>
+        /// Adds a SmartDbContext.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="environment"></param>
+        public static IServiceCollection AddSmartDbContext<TContext>(this IServiceCollection services, Action<DbContextOptionsBuilder> optionsAction) where TContext : SmartDbContext
+        {
+            services.AddHttpContextAccessor()
+                .AddDbContext<TContext>(opt =>
+                {
+                    optionsAction(opt);
+                    opt.ReplaceService<IValueConverterSelector, SmartValueConverter>();
+                });
+
+            return services.AddScoped(sp =>
+            {
+                IHttpContextAccessor accessor = sp.GetService<IHttpContextAccessor>();
+                TContext context = sp.GetService<TContext>();
                 context.CurrentUser = accessor.HttpContext.GetUsername();
                 return context;
             });

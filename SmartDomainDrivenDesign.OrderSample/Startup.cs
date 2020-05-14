@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SmartDomainDrivenDesign.Infrastructure.AspNetCore;
+using SmartDomainDrivenDesign.OrderSample.Infrastructure.Data;
 
 namespace SmartDomainDrivenDesign.WebApiExample
 {
@@ -18,7 +21,10 @@ namespace SmartDomainDrivenDesign.WebApiExample
         }
 
         public void ConfigureServices(IServiceCollection services)
-            => services.AddControllers();
+        {
+            services.AddSmartDbContextPool<OrdersDbContext>(opt => opt.UseSqlite("Data Source=orders.db"));
+            var unused = services.AddControllers();
+        }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

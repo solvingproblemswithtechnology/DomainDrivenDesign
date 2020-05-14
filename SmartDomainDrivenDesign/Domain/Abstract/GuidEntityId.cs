@@ -8,7 +8,6 @@ namespace SmartDomainDrivenDesign.Domain.Abstract
 {
     public class GuidEntityId : EntityId
     {
-        [Key]
         public Guid Id { get; protected set; }
 
         private GuidEntityId() { }
