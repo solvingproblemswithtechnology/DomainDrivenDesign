@@ -108,9 +108,9 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
             return services.AddProblemDetails(options =>
              {
                  options.IncludeExceptionDetails = (ctx, ex) => environment.IsDevelopment();
-                 options.Map<NotImplementedException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status501NotImplemented));
-                 options.Map<HttpRequestException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status503ServiceUnavailable));
-                 options.Map<Exception>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status500InternalServerError));
+                 options.MapToStatusCode<NotImplementedException>(StatusCodes.Status501NotImplemented);
+                 options.MapToStatusCode<HttpRequestException>(StatusCodes.Status503ServiceUnavailable);
+                 options.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
              });
         }
 
@@ -125,9 +125,9 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
             return services.AddProblemDetails(options =>
             {
                 options.IncludeExceptionDetails = (ctx, ex) => environment.IsDevelopment();
-                options.Map<NotImplementedException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status501NotImplemented));
-                options.Map<HttpRequestException>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status503ServiceUnavailable));
-                options.Map<Exception>(ex => new ExceptionProblemDetails(ex, StatusCodes.Status500InternalServerError));
+                options.MapToStatusCode<NotImplementedException>(StatusCodes.Status501NotImplemented);
+                options.MapToStatusCode<HttpRequestException>(StatusCodes.Status503ServiceUnavailable);
+                options.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
                 configure?.Invoke(options);
             });
         }
