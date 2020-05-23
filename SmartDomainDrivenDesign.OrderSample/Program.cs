@@ -11,11 +11,11 @@ using Microsoft.EntityFrameworkCore;
 using Convey.WebApi;
 using Convey.WebApi.CQRS;
 using SmartDomainDrivenDesign.Infrastructure.Convey;
-using SmartDomainDrivenDesign.OrderSample.Application.Orders.Commands;
 using Convey.WebApi.Swagger;
 using Convey.Docs.Swagger;
 using Convey.CQRS.Commands;
 using Convey.CQRS.Queries;
+using SmartDomainDrivenDesign.OrderSample.Application.Orders;
 
 namespace SmartDomainDrivenDesign.WebApiExample
 {
@@ -46,7 +46,8 @@ namespace SmartDomainDrivenDesign.WebApiExample
                     app.UseSwaggerDocs()
                         .UsePublicContracts<Contract>()
                         .UseDispatcherEndpoints(endpoints => endpoints
-                            .Post<PlaceOrderRequest>("api/Orders")
+                            .Get<GetOrdersRequest, GetOrdersResponse>("api/Orders")
+                            .Post<PlaceOrderRequest>("api/Order2")
                         );
                 })
                 .ConfigureLogging((ctx, builder) =>

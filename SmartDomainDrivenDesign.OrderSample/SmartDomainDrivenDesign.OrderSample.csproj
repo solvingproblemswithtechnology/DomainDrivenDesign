@@ -7,15 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Orders\Queries\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Convey" Version="0.4.325" />
-    <PackageReference Include="Convey.WebApi" Version="0.4.325" />
-    <PackageReference Include="Convey.WebApi.CQRS" Version="0.4.325" />
-    <PackageReference Include="Convey.WebApi.Swagger" Version="0.4.325" />
+    <PackageReference Include="Convey" Version="0.4.327" />
+    <PackageReference Include="Convey.WebApi" Version="0.4.327" />
+    <PackageReference Include="Convey.WebApi.CQRS" Version="0.4.327" />
+    <PackageReference Include="Convey.WebApi.Swagger" Version="0.4.327" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.4" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="Roslynator.Analyzers" Version="2.3.0">
