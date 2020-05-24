@@ -1,10 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore;
 using SmartDomainDrivenDesign.OrderSample.Domain.Orders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SmartDomainDrivenDesign.OrderSample.Infrastructure.Data
 {
@@ -30,10 +26,7 @@ namespace SmartDomainDrivenDesign.OrderSample.Infrastructure.Data
                 b.Metadata.FindNavigation(nameof(Order.Lines)).SetPropertyAccessMode(PropertyAccessMode.Field);
             });
 
-            modelBuilder.Entity<OrderLine>(b =>
-            {
-                b.HasKey(o => o.Id);
-            });
+            modelBuilder.Entity<OrderLine>(b => b.HasKey(o => o.Id));
 
             base.OnModelCreating(modelBuilder);
         }

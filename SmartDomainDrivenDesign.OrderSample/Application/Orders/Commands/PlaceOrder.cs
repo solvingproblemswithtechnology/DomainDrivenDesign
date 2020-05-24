@@ -31,7 +31,6 @@ namespace SmartDomainDrivenDesign.OrderSample.Application.Orders
     {
         public PlaceOrderHandler()
         {
-
         }
 
         public async Task HandleAsync(PlaceOrderRequest command)

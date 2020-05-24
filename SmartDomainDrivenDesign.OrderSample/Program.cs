@@ -1,21 +1,21 @@
+using Convey;
+using Convey.CQRS.Commands;
+using Convey.CQRS.Queries;
+using Convey.Docs.Swagger;
+using Convey.WebApi;
+using Convey.WebApi.CQRS;
+using Convey.WebApi.Swagger;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using System.Threading.Tasks;
-using Convey;
 using SmartDomainDrivenDesign.Infrastructure.AspNetCore;
-using SmartDomainDrivenDesign.OrderSample.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-using Convey.WebApi;
-using Convey.WebApi.CQRS;
 using SmartDomainDrivenDesign.Infrastructure.Convey;
-using Convey.WebApi.Swagger;
-using Convey.Docs.Swagger;
-using Convey.CQRS.Commands;
-using Convey.CQRS.Queries;
 using SmartDomainDrivenDesign.OrderSample.Application.Orders;
+using SmartDomainDrivenDesign.OrderSample.Infrastructure.Data;
+using System.Threading.Tasks;
 
 namespace SmartDomainDrivenDesign.WebApiExample
 {

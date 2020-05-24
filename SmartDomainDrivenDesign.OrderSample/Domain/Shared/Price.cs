@@ -28,6 +28,7 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Shared
         }
 
         public static Price operator *(Price price, decimal multiplier) => new Price(price.Amount * multiplier, price.Currency);
+
         public static Price operator +(Price left, Price right)
         {
             // TODO DomainException

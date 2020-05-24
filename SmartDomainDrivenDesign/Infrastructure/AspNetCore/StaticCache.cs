@@ -13,14 +13,14 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
             this.cache = cache;
         }
 
-        public T Get<T>([CallerMemberName]string key = null)
+        public T Get<T>([CallerMemberName] string key = null)
         {
             if (key is null) throw new ArgumentNullException(nameof(key));
 
             return this.cache.Get<T>(key);
         }
 
-        public void Set<T>(T value, [CallerMemberName]string key = null)
+        public void Set<T>(T value, [CallerMemberName] string key = null)
         {
             if (key is null) throw new ArgumentNullException(nameof(key));
 

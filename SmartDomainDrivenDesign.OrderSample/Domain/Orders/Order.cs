@@ -13,7 +13,7 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Orders
 
         #region Navigation Properties
 
-        private ICollection<OrderLine> lines;
+        private readonly ICollection<OrderLine> lines;
         public IEnumerable<OrderLine> Lines => lines;
 
         #endregion
@@ -24,7 +24,7 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Orders
 
         #endregion
 
-        private Order(string user) { }
+        private Order() { }
 
         public Order(string user, IEnumerable<OrderLine> lines)
         {

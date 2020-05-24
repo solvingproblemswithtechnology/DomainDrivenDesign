@@ -1,17 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartDomainDrivenDesign.Domain.Abstract;
 using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
 
 namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
 {
     internal class GuidEntityIdValueConverter<TIdentifier> : ValueConverter<TIdentifier, Guid> where TIdentifier : GuidEntityId
     {
-        private static Func<Guid, TIdentifier> constructor;
+        private static readonly Func<Guid, TIdentifier> constructor;
 
         /// <summary>
         /// This method compiles a Func using IL emitting to avoid calling Activator.CreateInstance and reflection every time.

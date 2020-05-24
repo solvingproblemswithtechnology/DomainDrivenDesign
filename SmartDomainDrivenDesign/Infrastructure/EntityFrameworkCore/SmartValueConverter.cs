@@ -3,7 +3,6 @@ using SmartDomainDrivenDesign.Domain.Abstract;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
 {

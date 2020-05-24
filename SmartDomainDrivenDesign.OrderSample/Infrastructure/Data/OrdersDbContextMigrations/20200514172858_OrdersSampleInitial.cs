@@ -1,5 +1,5 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace SmartDomainDrivenDesign.OrderSample.Infrastructure.Data.OrdersDbContextMigrations
 {
@@ -14,10 +14,7 @@ namespace SmartDomainDrivenDesign.OrderSample.Infrastructure.Data.OrdersDbContex
                     Id = table.Column<Guid>(nullable: false),
                     User = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Order", x => x.Id);
-                });
+                constraints: table => table.PrimaryKey("PK_Order", x => x.Id));
 
             migrationBuilder.CreateTable(
                 name: "OrderLine",

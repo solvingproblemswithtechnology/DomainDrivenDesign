@@ -1,17 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartDomainDrivenDesign.Domain.Abstract;
 using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
 
 namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
 {
     internal class AutoIncrementalEntityIdValueConverter<TIdentifier> : ValueConverter<TIdentifier, long> where TIdentifier : AutoIncrementalEntityId
     {
-        private static Func<long, TIdentifier> constructor;
+        private static readonly Func<long, TIdentifier> constructor;
 
         /// <summary>
         /// This method compiles a Func using IL emitting to avoid calling Activator.CreateInstance and reflection every time.
