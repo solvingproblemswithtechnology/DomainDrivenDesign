@@ -15,6 +15,8 @@ namespace SmartDomainDrivenDesign.Domain.Abstract
         where TEntity : Entity<TEntity, TIdentifier>, IAggregateRoot
         where TIdentifier : EntityId
     {
+        IUnitOfWork UnitOfWork { get; }
+
         ValueTask<TEntity> FindAsync(TIdentifier identifier);
 
         void Add(TEntity entity);
