@@ -39,6 +39,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         }
 
         /// <summary>
+        /// Contains
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="B"></typeparam>
@@ -53,6 +54,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         }
 
         /// <summary>
+        /// Contains
         /// </summary>
         /// <typeparam name="B"></typeparam>
         /// <param name="propertyName"></param>
@@ -89,7 +91,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         }
 
         /// <summary>
-        ///
+        /// And
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="first"></param>
@@ -98,7 +100,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second) => first.Compose(second, Expression.And);
 
         /// <summary>
-        ///
+        /// Or
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="first"></param>
@@ -107,7 +109,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second) => first.Compose(second, Expression.Or);
 
         /// <summary>
-        ///
+        /// Execute
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="first"></param>

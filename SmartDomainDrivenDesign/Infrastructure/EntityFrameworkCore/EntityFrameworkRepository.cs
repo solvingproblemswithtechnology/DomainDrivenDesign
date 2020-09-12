@@ -22,6 +22,8 @@ namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
     {
         private readonly SmartDbContext context;
 
+        public IUnitOfWork UnitOfWork => this.context;
+
         public EntityFrameworkRepository(SmartDbContext context)
         {
             this.context = context;
