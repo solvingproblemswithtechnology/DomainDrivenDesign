@@ -3,7 +3,12 @@ using SmartDomainDrivenDesign.OrderSample.Domain.Shared;
 
 namespace SmartDomainDrivenDesign.OrderSample.Domain.Items
 {
-    public class Item : Entity<Item>
+    public class ItemId : GuidEntityId
+    {
+        public ItemId(System.Guid id) : base(id) { }
+    }
+
+    public class Item : Entity<Item, ItemId>
     {
         public string Name { get; set; }
         public Price UnitPrice { get; set; }
