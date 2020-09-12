@@ -8,7 +8,6 @@ namespace SmartDomainDrivenDesign.Domain.Shared
 {
     public static class ExpressionBuilder
     {
-#pragma warning disable RCS1175 // Unused this parameter.
         /// <summary>
         /// https://lostechies.com/jimmybogard/2011/02/15/prototyping-with-anonymous-classes/
         /// Workaround to create Expressions for Anonymous types.
@@ -19,7 +18,6 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         /// <param name="expr"></param>
         /// <returns></returns>
         public static Expression<Func<T, TResult>> CreateExpression<T, TResult>(this T _, Expression<Func<T, TResult>> expr) => expr;
-#pragma warning restore RCS1175 // Unused this parameter.
 
         /// <summary>
         /// Obtiene el nombre de la propiedad a partir de la expresión de selección de la propiedad
@@ -39,6 +37,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         }
 
         /// <summary>
+        /// Contains
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="B"></typeparam>
@@ -53,6 +52,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         }
 
         /// <summary>
+        /// Contains
         /// </summary>
         /// <typeparam name="B"></typeparam>
         /// <param name="propertyName"></param>
@@ -89,7 +89,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         }
 
         /// <summary>
-        ///
+        /// And
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="first"></param>
@@ -98,7 +98,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second) => first.Compose(second, Expression.And);
 
         /// <summary>
-        ///
+        /// Or
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="first"></param>
@@ -107,7 +107,7 @@ namespace SmartDomainDrivenDesign.Domain.Shared
         public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second) => first.Compose(second, Expression.Or);
 
         /// <summary>
-        ///
+        /// Execute
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="first"></param>

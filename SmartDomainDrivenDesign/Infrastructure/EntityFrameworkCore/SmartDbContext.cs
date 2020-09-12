@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SmartDomainDrivenDesign.Domain.Abstract;
+using SmartDomainDrivenDesign.Domain.Shared;
 using System;
 using System.Linq;
 using System.Threading;
@@ -13,19 +14,32 @@ namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
     /// <summary>
     /// Proporciona la funcionalidad de Auditoría y de añadir los ValueObjects automáticamente
     /// </summary>
-    public abstract class SmartDbContext : DbContext
+    public abstract class SmartDbContext : DbContext, IUnitOfWork
     {
+        /// <summary>
+        /// Event bus
+        /// </summary>
+        private readonly IDomainEventBus domainEventBus;
+
         /// <summary>
         /// The current user to Audit
         /// </summary>
         public string CurrentUser { get; set; }
 
         /// <summary>
+        /// Default constructor. Use the one with IDomainEventBus
+        /// </summary>
+        /// <param name="options"></param>
+        protected SmartDbContext(DbContextOptions options) : base(options) { }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="options"></param>
-        protected SmartDbContext(DbContextOptions options) : base(options)
+        /// <param name="domainEventBus"></param>
+        protected SmartDbContext(DbContextOptions options, IDomainEventBus domainEventBus) : base(options)
         {
+            this.domainEventBus = domainEventBus;
         }
 
         #region OnModelCreating
@@ -180,6 +194,20 @@ namespace SmartDomainDrivenDesign.Infrastructure.EntityFrameworkCore
         {
             this.UpdateAuditables();
             return base.SaveChangesAsync(cancellationToken);
+        }
+
+        #endregion
+
+        #region IUnitOfWork
+
+        public async Task<bool> SaveEntitiesAsync(CancellationToken cancellationToken = default)
+        {
+            var entites = this.ChangeTracker.Entries<IDomainEventEntity>().Select(e => e.Entity);
+            await domainEventBus.DispatchDomainEventsAsync(entites).ConfigureAwait(false);
+
+            await this.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            return true;
         }
 
         #endregion
