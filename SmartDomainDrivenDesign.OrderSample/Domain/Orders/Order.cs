@@ -15,6 +15,8 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Orders
 
     public class Order : Entity<Order, OrderId>, IAggregateRoot
     {
+        public enum OrderStatus { Placed, Confirmed, Paid }
+
         public BuyerId BuyerId { get; private set; }
 
         #region Navigation Properties
@@ -30,16 +32,35 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Orders
 
         #endregion
 
+        #region Constructors
+
         private Order() { }
 
-        public Order(OrderId orderId, BuyerId buyerId, IEnumerable<OrderLine> lines)
+        private Order(OrderId orderId, BuyerId buyerId, IEnumerable<OrderLine> lines)
         {
             this.Id = orderId;
             this.BuyerId = buyerId;
             this.lines = lines.ToList();
+
+            this.AddDomainEvent(new OrderPlaced(this.Id, this.lines.Select(l => l.ItemId)));
         }
 
-        public static Order PlaceOrder(OrderId orderId, BuyerId buyerId, IEnumerable<(decimal quantity, ItemId itemId)> quantities)
-            => new Order(orderId, buyerId, quantities.Select(q => OrderLine.CreateForItem(q.quantity, q.itemId)));
+        public static Order PlaceOrder(OrderId orderId, BuyerId buyerId, IEnumerable<(decimal quantity, ItemId itemId)> lines)
+            => new Order(orderId, buyerId, lines.Select(q => OrderLine.CreateForItem(q.quantity, q.itemId)));
+
+        #endregion
+
+        public void ConfirmItemPrices(Dictionary<ItemId, Price> prices)
+        {
+            foreach (OrderLine line in this.lines)
+            {
+                if (!prices.TryGetValue(line.ItemId, out Price validPrice))
+                    throw new ArgumentException("Missing item price with ItemId: " + line.ItemId);
+
+                line.ConfirmPrice(validPrice);
+            }
+
+            this.AddDomainEvent(new OrderConfirmed(this.Id));
+        }
     }
 }

@@ -9,20 +9,20 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Shared
     public class Quantity : ValueObject
     {
         public decimal Units { get; }
-        public string MeasureUnits { get; set; }
+        public string MeasureUnit { get; set; }
 
         private Quantity() { }
 
-        public Quantity(decimal units, string measureUnits)
+        public Quantity(decimal units, string measureUnit)
         {
             this.Units = units;
-            this.MeasureUnits = measureUnits;
+            this.MeasureUnit = measureUnit;
         }
 
         protected override IEnumerable<object> GetAtomicValues()
         {
             yield return Units;
-            yield return MeasureUnits;
+            yield return MeasureUnit;
         }
     }
 }
