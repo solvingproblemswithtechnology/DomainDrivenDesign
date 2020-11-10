@@ -34,7 +34,8 @@ namespace SmartDomainDrivenDesign.WebApiExample
                             .Enable(true)
                             .WithName("Order Sample API")
                             .WithTitle("Order Sample API")
-                            .WithVersion("1"))
+                            .WithVersion("1")
+                            .WithRoutePrefix("swagger"))
                         .AddCommandHandlers()
                         .AddQueryHandlers()
                         .AddInMemoryCommandDispatcher()
@@ -46,7 +47,7 @@ namespace SmartDomainDrivenDesign.WebApiExample
                     app.UseSwaggerDocs()
                         .UsePublicContracts<Contract>()
                         .UseDispatcherEndpoints(endpoints => endpoints
-                            .Get<GetOrdersRequest, GetOrdersResponse>("api/Orders")
+                            .Get<GetOrdersRequest, GetOrdersResponse>("api/Order1")
                             .Post<PlaceOrderRequest>("api/Order2")
                         );
                 })

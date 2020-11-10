@@ -13,7 +13,7 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Orders
         public OrderId(Guid id) : base(id) { }
     }
 
-    public class Order : Entity<Order, OrderId>, IAggregateRoot
+    public sealed class Order : Entity<Order, OrderId>, IAggregateRoot
     {
         public enum OrderStatus { Placed, Confirmed, Paid }
 
