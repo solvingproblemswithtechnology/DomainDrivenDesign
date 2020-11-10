@@ -158,8 +158,8 @@ namespace SmartDomainDrivenDesign.Infrastructure.AspNetCore
 
             return services.AddScoped(sp =>
             {
-                IHttpContextAccessor accessor = sp.GetService<IHttpContextAccessor>();
-                TContext context = sp.GetService<DbContextPool<TContext>.Lease>().Context;
+                   IHttpContextAccessor accessor = sp.GetService<IHttpContextAccessor>();
+                TContext context = sp.GetService<IScopedDbContextLease<TContext>>().Context;
                 context.CurrentUser = accessor.HttpContext.GetUsername();
                 return context;
             });
