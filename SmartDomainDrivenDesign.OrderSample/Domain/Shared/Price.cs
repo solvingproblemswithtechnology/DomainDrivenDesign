@@ -42,6 +42,6 @@ namespace SmartDomainDrivenDesign.OrderSample.Domain.Shared
     {
         public static Price Sum(this IEnumerable<Price> prices) => prices.Aggregate((accumulator, next) => accumulator + next);
 
-        public static Price Sum<T>(this IEnumerable<T> source, Func<T, Price> selector) => source.Select(selector).Aggregate((accumulator, next) => accumulator + next);
+        public static Price Sum<T>(this IEnumerable<T> source, Func<T, Price> selector) => source.Select(selector).Sum();
     }
 }
