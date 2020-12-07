@@ -1,3 +1,3 @@
 # SmartDomainDrivenDesign
 
-SmartDomainDrivenDesign is a project to speed up DDD .Net solutions development.
+SmartDomainDrivenDesign is a test project where a try different aproaches and experiments to learn something!
